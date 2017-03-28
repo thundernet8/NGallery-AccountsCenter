@@ -4,6 +4,7 @@ import baseConfig                     from './webpack.base.conf.babel'
 import HtmlWebpackPlugin              from 'html-webpack-plugin'
 import merge                          from 'webpack-merge'
 import OptimizeCssAssetsPlugin        from 'optimize-css-assets-webpack-plugin'
+import config                         from '../config'
 
 baseConfig.entry = {}
 
@@ -26,7 +27,7 @@ let appProdConfig = {
         'redux',
         'redux-thunk',
         'react-redux',
-        'react-ga',
+        //'react-ga',
         'axios',
     ]
   },
@@ -35,7 +36,7 @@ let appProdConfig = {
     filename: '[name].[chunkhash:8].js',
     chunkFilename: '[id].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: './'
+    publicPath: `http://account.fuli.news`
   },
 
   module: {
@@ -54,7 +55,7 @@ let appProdConfig = {
         NODE_ENV: JSON.stringify('production')
       }
     }),
-    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.[hash].js'),
+    new webpack.optimize.CommonsChunkPlugin({name: 'vendors', filename: 'vendors.[hash:8].js'}),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false

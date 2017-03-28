@@ -3,8 +3,9 @@ import webpack            from 'webpack'
 import baseConfig         from './webpack.base.conf.babel'
 import merge              from 'webpack-merge'
 import HtmlWebpackPlugin  from 'html-webpack-plugin'
+import config             from '../config'
 
-const port = process.env.PORT || 3000
+const port = config.port || 3000
 
 let devConfig = {
   // eval-source-map is faster for development
@@ -12,7 +13,7 @@ let devConfig = {
 
   entry: {
     app: [
-      `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
+      `webpack-hot-middleware/client?path=http://account.fuli.news:${port}/__webpack_hmr`,
       'babel-polyfill',
       './src/index.jsx'
     ]
@@ -20,7 +21,7 @@ let devConfig = {
 
   output: {
     path: path.resolve(__dirname, '../dist'),
-    publicPath: `http://localhost:${port}/static/`
+    publicPath: `http://account.fuli.news:${port}`
   },
 
   module: {
