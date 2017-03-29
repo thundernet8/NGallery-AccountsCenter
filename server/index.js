@@ -39,6 +39,11 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(express.static('dist'))
 
+// Support BrowserHistory
+app.get('*', (req, res) => {
+    response.sendFile(path.resolve(__dirname, '../dist', 'index.html'))
+})
+
 app.disable('x-powered-by')
 
 if (process.env.NODE_ENV === 'development') {

@@ -1,3 +1,7 @@
+const baseConfig = {
+    tokenCookie: 'NGallery_Token'
+}
+
 const devConfig = {
     debug: true,
     host: 'localhost',
@@ -7,9 +11,9 @@ const devConfig = {
 
 const prodConfig = {
     debug: false,
-    host: 'localhost',
+    host: 'http://account.fuli.news',
     port: 8080,
     api: 'http://api.fuli.news/api/v1'
 }
 
-module.exports = process.env.NODE_ENV == 'development' ? devConfig : prodConfig
+module.exports = process.env.NODE_ENV == 'development' ? Object.assign({}, baseConfig, devConfig) : Object.assign({}, baseConfig, prodConfig)
