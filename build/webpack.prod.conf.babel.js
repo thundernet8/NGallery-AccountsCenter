@@ -36,7 +36,7 @@ let appProdConfig = {
     filename: '[name].[chunkhash:8].js',
     chunkFilename: '[id].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: `http://account.fuli.news`
+    publicPath: `/`
   },
 
   module: {
@@ -56,12 +56,12 @@ let appProdConfig = {
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendors', filename: 'vendors.[hash:8].js'}),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      sourceMap: false
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false
+    //   },
+    //   sourceMap: false
+    // }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.min\.css$/g,
       cssProcessor: require('cssnano'),
@@ -70,13 +70,15 @@ let appProdConfig = {
     }),
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: '../dist/index.html',
+      filename: '../dist/index.ejs',
       template: 'src/index.html',
       inject: true,
+      meta: '<%- meta %>',
+      reduxState: '<%- reduxState %>',
       minify: {
         removeComments: true,
         collapseWhitespace: true,
-        removeAttributeQuotes: true
+        removeAttributeQuotes: true,
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       }

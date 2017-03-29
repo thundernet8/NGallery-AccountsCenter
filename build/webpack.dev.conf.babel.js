@@ -45,8 +45,10 @@ let devConfig = {
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
         template: 'src/index.html',
-        filename: '../dist/index.html',
-        inject: true
+        filename: '../dist/index.ejs',
+        inject: true,
+        meta: '<%- meta %>',
+        reduxState: '<%- reduxState %>'
     })
   ]
 }

@@ -13,7 +13,7 @@ const prodConfig = {
     debug: false,
     host: 'http://account.fuli.news',
     port: 8080,
-    api: 'http://api.fuli.news/api/v1'
+    api: 'http://api-node:8080/api/v1'
 }
 
 module.exports = process.env.NODE_ENV == 'development' ? Object.assign({}, baseConfig, devConfig) : Object.assign({}, baseConfig, prodConfig)

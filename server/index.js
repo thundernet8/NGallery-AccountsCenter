@@ -1,14 +1,17 @@
 import express                  from 'express'
 import webpack                  from 'webpack'
 import bodyParser               from 'body-parser';
+import cookieParser             from 'cookie-parser'
 import compression              from 'compression';
 import config                   from '../config'
 import devConfig                from '../build/webpack.dev.conf.babel'
+import inject                   from './inject'
 
 let app = express()
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser(config.tokenCookie));
 
 const PORT = config.port
 
@@ -40,9 +43,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static('dist'))
 
 // Support BrowserHistory
-app.get('*', (req, res) => {
-    response.sendFile(path.resolve(__dirname, '../dist', 'index.html'))
-})
+app.get('*', inject)
 
 app.disable('x-powered-by')
 
