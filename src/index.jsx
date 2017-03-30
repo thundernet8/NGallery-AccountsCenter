@@ -8,7 +8,7 @@ import createRouter                                             from './routes'
 
 let store = configureStore(window.__initState__)
 
-const me = store.getState().user.profile
+const me = store.getState().user
 
 if (module.hot) {
     module.hot.accept('./reducers', () => {
@@ -19,7 +19,7 @@ if (module.hot) {
 
 ReactDOM.render(
     <Provider store={store}>
-        {createRouter(createBrowserHistory(), (me && me._id) ? me : null)}
+        {createRouter(createBrowserHistory(), (me.profile && me.profile._id) ? me : null)}
     </Provider>,
     document.getElementById('app')
 )
