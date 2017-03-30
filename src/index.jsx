@@ -5,6 +5,7 @@ import { Provider }                                             from 'react-redu
 import { combineReducers }                                      from 'redux'
 import configureStore                                           from './store/configureStore'
 import createRouter                                             from './routes'
+import './styles/global/global.scss'
 
 let store = configureStore(window.__initState__)
 

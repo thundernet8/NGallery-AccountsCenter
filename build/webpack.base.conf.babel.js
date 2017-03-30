@@ -110,6 +110,6 @@ export default {
   },
   plugins: [
       // extract css to one file
-      new ExtractTextPlugin({filename: process.env.NODE_ENV === 'production' ? 'style.min.css' : 'style.css', disable: false, allChunks: true}),
+      new ExtractTextPlugin({filename: process.env.NODE_ENV === 'production' ? 'style.min.[hash:8].css' : 'style.css', disable: false, allChunks: true}),
   ]
 }

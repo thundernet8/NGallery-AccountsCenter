@@ -1,10 +1,10 @@
-const dockerized = false
+const dockerized = true
 
 const baseConfig = {
     tokenCookie: 'NGallery_Token',
     dockerized: dockerized,
     host: dockerized ? '0.0.0.0' : 'localhost', // for express listen
-    static: dockerized ? 'http://static1.fuli.news' : '/'
+    static: dockerized ? 'http://static1.fuli.news/' : '/'
 }
 
 const devConfig = {
