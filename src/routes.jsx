@@ -15,6 +15,7 @@ export default (history, user) => {
     }
 
     const requireAuth = (nextState, replaceState) => {
+        console.log(10000000000000000000)
         if (!user) {
             replaceState({
                 pathname: '/signin',

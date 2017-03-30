@@ -1,7 +1,6 @@
 import React                                                    from 'react'
 import ReactDOM                                                 from 'react-dom'
-// import { browserHistory }                                       from 'react-router'
-import createBrowserHistory                                     from 'history/createBrowserHistory'
+import createBrowserHistory                                     from 'history/lib/createBrowserHistory'
 import { Provider }                                             from 'react-redux'
 import { combineReducers }                                      from 'redux'
 import configureStore                                           from './store/configureStore'
@@ -9,7 +8,7 @@ import createRouter                                             from './routes'
 
 let store = configureStore(window.__initState__)
 
-const me = store.getState().me
+const me = store.getState().user.profile
 
 if (module.hot) {
     module.hot.accept('./reducers', () => {

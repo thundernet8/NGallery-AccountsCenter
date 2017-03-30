@@ -36,18 +36,19 @@ const authorize = (token) => {
 }
 
 router.route('*').get((req, res) => {
-    const token = req.cookies && req.cookies[config.tokenCookie] || null
-    let me = null
+    let token = req.cookies && req.cookies[config.tokenCookie] || ''
+    let profile = null
     authorize(token)
     .then((user) => {
-        me = user
+        profile = user
     })
     .catch((err) => {
         res.clearCookie(config.tokenCookie)
+        token = ''
     })
     .finally(() => {
         const meta = DocumentMeta.renderAsHTML()
-        const reduxState = JSON.stringify({ me })
+        const reduxState = JSON.stringify({ user: {profile, accessToken: token} })
         res.render(path.resolve(__dirname, '../dist/index.ejs'), { meta, reduxState });
     })
 })

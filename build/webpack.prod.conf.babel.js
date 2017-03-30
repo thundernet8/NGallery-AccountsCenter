@@ -23,6 +23,7 @@ let appProdConfig = {
         'react-dom',
         'react-router',
         'react-router-redux',
+        'react-cookie',
         'babel-polyfill',
         'redux',
         'redux-thunk',
@@ -36,7 +37,7 @@ let appProdConfig = {
     filename: '[name].[chunkhash:8].js',
     chunkFilename: '[id].js',
     path: path.resolve(__dirname, '../dist'),
-    publicPath: `/`
+    publicPath: config.static
   },
 
   module: {

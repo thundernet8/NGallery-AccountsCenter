@@ -13,8 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser(config.tokenCookie));
 
-const PORT = config.port
-
 if (process.env.NODE_ENV === 'development') {
     let compiler = webpack(devConfig)
     const webpackDevMiddleware = require('webpack-dev-middleware')
@@ -47,18 +45,9 @@ app.get('*', inject)
 
 app.disable('x-powered-by')
 
-if (process.env.NODE_ENV === 'development') {
-    app.listen(PORT, 'localhost', err => {
-        if (err) {
-            return console.error(err)
-        }
-        console.log(`Listening at http://localhost:${PORT}`)
-    })
-} else {
-    app.listen(PORT, err => {
-        if (err) {
-            return console.error(err)
-        }
-        console.log(`Listening at 0.0.0.0:${PORT}`)
-    })
-}
+app.listen(config.port, config.host, err => {
+    if (err) {
+        return console.error(err)
+    }
+    console.log(`Listening at http://${config.host}:${config.port}`)
+})
