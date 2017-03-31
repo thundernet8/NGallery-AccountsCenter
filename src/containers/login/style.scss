@@ -1,12 +1,18 @@
 .container {
     position: relative;
     height: 100%;
-    background: linear-gradient(0deg, #0b4190 1%, #1e88e5 100%);
+    background-color: #A0A0A0;
+    background: linear-gradient(to bottom,#634c68 0,rgba(99,76,104,.98) 1%,rgba(99,76,104,.34) 41%,rgba(52,200,192,.34) 67%,#34c8c0 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#634c68', endColorstr='#34c8c0', GradientType=0 );
 }
 
 .content {
     position: relative;
     height: 100%;
+    &::after {
+        content: '';
+        clear: both;
+    }
 }
 
 .loginBox {
@@ -14,22 +20,36 @@
     top: 50%;
     left: 50%;
     margin-left: -200px;
-    margin-top: -225px;
+    margin-top: -250px;
     padding: 40px;
     width: 400px;
     height: 450px;
     background: #ffffff;
     border-radius: 4px;
     overflow: hidden;
+
+    .logoLink {
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    .logo {
+        display: block;
+        height: 60px;
+        margin: 0 auto 50px;
+    }
+
+    .submitBtn {
+        width: 100%;
+        height: 44px;
+        margin-top: 30px;
+        padding: 8px 22px;
+        font-weight: 500;
+        &:hover {
+            box-shadow: none !important;
+            opacity: 0.9;
+        }
+    }
 }
 
-.logoLink {
-    text-decoration: none;
-    color: #ffffff;
-}
 
-.logo {
-    display: block;
-    height: 50px;
-    margin: 0 auto 20px;
-}

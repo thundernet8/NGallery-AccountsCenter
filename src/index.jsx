@@ -6,6 +6,7 @@ import { combineReducers }                                      from 'redux'
 import configureStore                                           from './store/configureStore'
 import createRouter                                             from './routes'
 import './styles/global/global.scss'
+import 'grommet/grommet.min.css'
 
 let store = configureStore(window.__initState__)
 

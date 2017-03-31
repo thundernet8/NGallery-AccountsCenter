@@ -1,8 +1,29 @@
 /* Normalize.css */
-@import "normalize";
+// @import "normalize";
 
 /* Font Awesome */
 // @import "font/font-awesome";
+
+/* Custom Reset */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: "Helvetica Neue", Helvetica, Tahoma, Arial, STXihei, "Microsoft YaHei", 微软雅黑, sans-serif;
+    height: 100%;
+}
+
+img {
+    max-width: 100%;
+}
+
+input,
+textarea {
+    &:focus {
+        outline: 0;
+    }
+}
 
 /* Utilities */
 .mt10 {
@@ -58,14 +79,6 @@
 }
 
 /* Elements */
-
-html, body {
-    font-family: "Helvetica Neue", Helvetica, Tahoma, Arial, STXihei, "Microsoft YaHei", 微软雅黑, sans-serif;
-}
-
-img {
-    max-width: 100%;
-}
 
 #app {
     height: 100%;
