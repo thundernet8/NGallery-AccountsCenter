@@ -6,9 +6,12 @@ import { combineReducers }                                      from 'redux'
 import configureStore                                           from './store/configureStore'
 import createRouter                                             from './routes'
 import LocalProvider                                            from './i18n/provider'
+import MuiThemeProvider                                         from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin                                     from 'react-tap-event-plugin'
 import './styles/global/global.scss'
 import 'animate.css'
-import 'grommet/grommet.min.css'
+
+injectTapEventPlugin()
 
 let store = configureStore(window.__initState__)
 
@@ -22,10 +25,12 @@ if (module.hot) {
 }
 
 ReactDOM.render(
-    <LocalProvider>
-        <Provider store={store}>
-            {createRouter(createBrowserHistory(), (me.profile && me.profile._id) ? me : null)}
-        </Provider>
-    </LocalProvider>,
+    <MuiThemeProvider>
+        <LocalProvider>
+            <Provider store={store}>
+                {createRouter(createBrowserHistory(), (me.profile && me.profile._id) ? me : null)}
+            </Provider>
+        </LocalProvider>
+    </MuiThemeProvider>,
     document.getElementById('app')
 )
