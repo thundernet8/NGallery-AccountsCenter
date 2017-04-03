@@ -5,7 +5,9 @@ import { Provider }                                             from 'react-redu
 import { combineReducers }                                      from 'redux'
 import configureStore                                           from './store/configureStore'
 import createRouter                                             from './routes'
+import LocalProvider                                            from './i18n/provider'
 import './styles/global/global.scss'
+import 'animate.css'
 import 'grommet/grommet.min.css'
 
 let store = configureStore(window.__initState__)
@@ -20,8 +22,10 @@ if (module.hot) {
 }
 
 ReactDOM.render(
-    <Provider store={store}>
-        {createRouter(createBrowserHistory(), (me.profile && me.profile._id) ? me : null)}
-    </Provider>,
+    <LocalProvider>
+        <Provider store={store}>
+            {createRouter(createBrowserHistory(), (me.profile && me.profile._id) ? me : null)}
+        </Provider>
+    </LocalProvider>,
     document.getElementById('app')
 )

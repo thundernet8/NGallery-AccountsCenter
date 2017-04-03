@@ -4,6 +4,7 @@ import { Route, Router, Redirect, IndexRoute, applyRouterMiddleware }       from
 import { getUrlQuery, addUrlQuery }                                         from './utils/url'
 
 // Containers
+import App from './containers/app'
 import Home from './containers/home'
 import Login from './containers/login'
 
@@ -48,7 +49,9 @@ export default (history, user) => {
 
     return (
         <Router history={history} /* render={applyRouterMiddleware(useScroll())} */>
-            <Route path="/" component={Home} onEnter={requireAuth} onLeave={triggerLeave}/>
+            <Route path="/" component={App}>
+                <IndexRoute component={Home} onEnter={requireAuth} onLeave={triggerLeave}/>
+            </Route>
             <Route path="/signin" component={Login} onEnter={authRedirect} onLeave={triggerLeave}/>
         </Router>
     )

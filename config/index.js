@@ -1,6 +1,8 @@
-const dockerized = true
+const dockerized = false
 
 const baseConfig = {
+    app: 'NGallery',
+    description: '',
     tokenCookie: 'NGallery_Token',
     dockerized: dockerized,
     host: dockerized ? '0.0.0.0' : 'localhost', // for express listen
@@ -21,4 +23,4 @@ const prodConfig = {
     api: dockerized ? 'http://api-node:8080/api/v1' : 'http://api.fuli.news/api/v1'
 }
 
-module.exports = process.env.NODE_ENV == 'development' ? Object.assign({}, baseConfig, devConfig) : Object.assign({}, baseConfig, prodConfig)
+module.exports = process.env.NODE_ENV === 'development' ? Object.assign({}, baseConfig, devConfig) : Object.assign({}, baseConfig, prodConfig)

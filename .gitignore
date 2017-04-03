@@ -9,3 +9,4 @@ release/
 .vscode/
 debug.log
 .npmrc
+typings/
