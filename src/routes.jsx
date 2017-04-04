@@ -7,6 +7,7 @@ import { getUrlQuery, addUrlQuery }                                         from
 import App from './containers/app'
 import Home from './containers/home'
 import Login from './containers/login'
+import Register from './containers/register'
 
 export default (history, user) => {
     const triggerEnter = (nextState, replaceState) => {
@@ -53,6 +54,7 @@ export default (history, user) => {
                 <IndexRoute component={Home} onEnter={requireAuth} onLeave={triggerLeave}/>
             </Route>
             <Route path="/signin" component={Login} onEnter={authRedirect} onLeave={triggerLeave}/>
+            <Route path="/signup" component={Register} onEnter={authRedirect} onLeave={triggerLeave}/>
         </Router>
     )
 }

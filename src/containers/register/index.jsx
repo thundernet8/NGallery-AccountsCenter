@@ -1,29 +1,71 @@
 import { connect }                  from 'react-redux'
 import React, { PropTypes }         from 'react'
+import { Link }                     from 'react-router'
 import ClassNames                   from 'classnames'
 import * as styles                  from './style.scss'
-import FormField                    from 'grommet/components/FormField'
-import TextInput                    from 'grommet/components/TextInput'
-import Button                       from 'grommet/components/Button'
-import Spinning                     from 'grommet/components/icons/Spinning'
-import PlatformSolarisIcon          from 'grommet/components/icons/base/PlatformSolaris'
+import TextField                    from 'material-ui/TextField'
+import RaisedButton                 from 'material-ui/RaisedButton'
+import Meta                         from '../../components/meta'
+import { FormattedMessage, injectIntl, defineMessages }         from 'react-intl'
+import Validator                    from '../../utils/validator'
+import Actions                      from '../../actions'
+import popMessage                   from '../../components/popMessage'
+
+const intlMsgs = defineMessages({
+    nameInput: {
+        id: '_UserName',
+        defaultMessage: 'UserName'
+    },
+    emailInput: {
+        id: '_Email',
+        defaultMessage: 'Email'
+    },
+    passInput: {
+        id: '_Password',
+        defaultMessage: 'Password'
+    },
+    submitBtn: {
+        id: '_Register',
+        defaultMessage: 'Register'
+    },
+    registerSuccessMsg: {
+        id: '_RegisterSuccess',
+        defaultMessage: 'Register successfully, please check you mailbox and active your account'
+    }
+})
 
 class Register extends React.Component {
     static propTypes = {
         username: PropTypes.string,
+        email: PropTypes.string,
         password: PropTypes.string,
-        submitting: PropTypes.bool
+        submitting: PropTypes.bool,
+        dialogOpen: PropTypes.bool
     }
 
     state = {
         username: '',
+        email: '',
         password: '',
-        submitting: false
+        submitting: false,
+        dialogOpen: false
+    }
+
+    validateInput = () => {
+        return Validator.isValidUserName(this.state.username) &&
+        Validator.isValidEmail(this.state.email) &&
+        this.state.password.length >= 6
     }
 
     onUserNameChange = (e) => {
         this.setState({
             username: e.target.value
+        })
+    }
+
+    onEmailChange = (e) => {
+        this.setState({
+            email: e.target.value
         })
     }
 
@@ -40,6 +82,19 @@ class Register extends React.Component {
         this.setState({
             submitting: true
         })
+        this.props.onRequestRegister(this.state.username, this.state.email, this.state.password)
+        .then(user => {
+            console.dir(user)
+            popMessage.show('', this.props.intl.formatMessage(intlMsgs.registerSuccessMsg), 5)
+        })
+        .catch(err => {
+            console.dir(err)
+            popMessage.show('', err.message, 5)
+        })
+    }
+
+    showMessageBox = () => {
+
     }
 
     componentDidMount () {
@@ -55,18 +110,31 @@ class Register extends React.Component {
     }
 
     render () {
+        const meta = {
+            title: 'Sign Up',
+            description: 'Sign up an account to explore'
+        }
+
+        const {formatMessage} = this.props.intl
+
         return (
             <div className={styles.container}>
+                <Meta meta={meta} />
+                {/* 禁止 Chrome 自动填充 */}
+                <input style={{position: 'fixed', top: '-1000px'}} type="text" name="fakeusernameremembered"/>
+                <input style={{position: 'fixed', top: '-1000px'}} type="password" name="fakepasswordremembered"/>
                 <div className={styles.content}>
-                    <div className={styles.loginBox}>
+                    <div className={styles.registerBox}>
                         <a className={styles.logoLink} href="/"><img className={styles.logo} src={require('../../assets/images/logo.png')}/></a>
-                        <FormField className="mt20">
-                            <TextInput id="username" value={this.state.username} placeHolder="Name or Email" onDOMChange={this.onUserNameChange} disabled={this.state.submitting} />
-                        </FormField>
-                        <FormField className="mt20">
-                            <TextInput type="password" id="password" value={this.state.password} placeHolder="Password" onDOMChange={this.onPassChange} disabled={this.state.submitting} />
-                        </FormField>
-                        <Button className={styles.submitBtn} type="submit" size="small" icon={this.state.submitting ? <PlatformSolarisIcon className={ClassNames('animating', 'spin')}/> : null} label={this.state.submitting ? null : 'LOGIN'} onClick={this.onSubmit} primary={true} plain={false} accent={false} secondary={false} disabled={!this.state.submitting} />
+                        <TextField className={styles.nameInputWrap} id="username" value={this.state.username} floatingLabelText={formatMessage(intlMsgs.nameInput)} onChange={this.onUserNameChange} disabled={this.state.submitting} />
+                        <TextField className={styles.emailInputWrap} id="email" value={this.state.email} floatingLabelText={formatMessage(intlMsgs.emailInput)} onChange={this.onEmailChange} disabled={this.state.submitting} />
+                        <TextField type="password" className={styles.passInputWrap} id="password" value={this.state.password} floatingLabelText={formatMessage(intlMsgs.passInput)} onChange={this.onPassChange} disabled={this.state.submitting} />
+                        <RaisedButton className={styles.submitBtn} label={formatMessage(intlMsgs.submitBtn)} primary={true} fullWidth={true} onClick={this.onSubmit} disabled={this.state.submitting || !this.validateInput()} />
+                        <div className={styles.accountHelper}>
+                            {<FormattedMessage id="_HasAccount" defaultMessage="Has Account?"/>}
+                            <span> · </span>
+                            <Link to="/signin">{<FormattedMessage id="_LoginNow" defaultMessage="Login Right Now"/>}</Link>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -75,11 +143,15 @@ class Register extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
+    return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+    return {
+        onRequestRegister: (username, email, password) => {
+            return dispatch(Actions.requestRegister(username, email, password))
+        }
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register)
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Register))

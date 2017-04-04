@@ -70,6 +70,7 @@
     "postcss-nested": "^1.0.0",
     "postcss-smart-import": "^0.6.10",
     "precss": "^1.4.0",
+    "rc-notification": "^1.4.1",
     "react": "^15.4.2",
     "react-cookie": "^1.0.5",
     "react-css-modules": "^4.1.0",

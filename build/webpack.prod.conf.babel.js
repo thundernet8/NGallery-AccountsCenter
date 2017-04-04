@@ -30,7 +30,7 @@ let appProdConfig = {
         'react-redux',
         //'react-ga',
         'axios',
-        'grommet'
+        'material-ui'
     ]
   },
 

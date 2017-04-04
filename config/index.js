@@ -13,7 +13,7 @@ const devConfig = {
     debug: true,
     home: 'http://localhost:3000',
     port: 3000,
-    api: dockerized ? 'http://api-node:8080/api/v1' : 'http://localhost:5000/api/v1'
+    api: dockerized ? 'http://api-node:8080/api/v1' : 'http://api.fuli.news/api/v1' // 'http://localhost:5000/api/v1'
 }
 
 const prodConfig = {

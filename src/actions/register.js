@@ -1,26 +1,26 @@
 import CONSTANTS                from '../constants'
 import axios                    from 'axios'
 
-export const requestLogin = (username, password) => {
+export const requestRegister = (username, email, password) => {
     return (dispatch) => {
         dispatch({
-            type: CONSTANTS.REQUEST_LOGIN
+            type: CONSTANTS.REQUEST_REGISTER
         })
 
-        const api = CONSTANTS.LOGIN_API
-        const data = {username, password}
+        const api = CONSTANTS.REGISTER_API
+        const data = {username, email, password}
         return axios.post(api, data)
         .then(ret => ret.data)
-        .then(ret /* {expire, access_token} */ => {
+        .then(ret /* IUserDocument */ => {
             dispatch({
-                type: CONSTANTS.REQUEST_LOGIN_SUCCESS,
+                type: CONSTANTS.REQUEST_REGISTER_SUCCESS,
                 payload: ret
             })
             return ret
         })
         .catch(err => {
             dispatch({
-                type: CONSTANTS.REQUEST_LOGIN_FAIL,
+                type: CONSTANTS.REQUEST_REGISTER_FAIL,
                 err
             })
             throw new Error(err)
