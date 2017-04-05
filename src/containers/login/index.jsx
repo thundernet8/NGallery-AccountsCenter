@@ -7,6 +7,10 @@ import TextField                    from 'material-ui/TextField'
 import RaisedButton                 from 'material-ui/RaisedButton'
 import Meta                         from '../../components/meta'
 import { FormattedMessage, injectIntl, defineMessages }         from 'react-intl'
+import Actions                      from '../../actions'
+import popMessage                   from '../../components/popMessage'
+import Spinner                      from '../../components/spinner'
+import Validator                    from '../../utils/validator'
 
 const intlMsgs = defineMessages({
     nameInput: {
@@ -20,6 +24,10 @@ const intlMsgs = defineMessages({
     submitBtn: {
         id: '_Login',
         defaultMessage: 'Login'
+    },
+    loginSuccessMsg: {
+        id: '_LoginSuccess',
+        defaultMessage: 'Login successfully, redirecting...'
     }
 })
 
@@ -34,6 +42,12 @@ class Login extends React.Component {
         username: '',
         password: '',
         submitting: false
+    }
+
+    judgeSubmitBtnActive = () => {
+        return !this.state.submitting &&
+        (Validator.isValidUserName(this.state.username) || Validator.isValidEmail(this.state.username)) &&
+        this.state.password.length >= 6
     }
 
     onUserNameChange = (e) => {
@@ -54,6 +68,21 @@ class Login extends React.Component {
         }
         this.setState({
             submitting: true
+        })
+        this.props.onRequestLogin(this.state.username, this.state.password)
+        .then(user => {
+            console.dir(user)
+            popMessage.show('', this.props.intl.formatMessage(intlMsgs.loginSuccessMsg), 2)
+            this.setState({
+                submitting: false
+            })
+        })
+        .catch(err => {
+            console.dir(err)
+            popMessage.show('', err.message, 5)
+            this.setState({
+                submitting: false
+            })
         })
     }
 
@@ -85,7 +114,7 @@ class Login extends React.Component {
                         <a className={styles.logoLink} href="/"><img className={styles.logo} src={require('../../assets/images/logo.png')}/></a>
                         <TextField className={styles.nameInputWrap} id="username" value={this.state.username} floatingLabelText={formatMessage(intlMsgs.nameInput)} onChange={this.onUserNameChange} disabled={this.state.submitting} />
                         <TextField type="password" className={styles.passInputWrap} id="password" value={this.state.password} floatingLabelText={formatMessage(intlMsgs.passInput)} onChange={this.onPassChange} disabled={this.state.submitting} />
-                        <RaisedButton className={styles.submitBtn} label={formatMessage(intlMsgs.submitBtn)} primary={true} fullWidth={true} onClick={this.onSubmit} disabled={this.state.submitting || this.state.username.length < 5 || this.state.password.length < 6} />
+                        <RaisedButton className={styles.submitBtn} label={!this.state.submitting ? formatMessage(intlMsgs.submitBtn) : ''} primary={true} fullWidth={true} onClick={this.onSubmit} disabled={!this.judgeSubmitBtnActive()}>{this.state.submitting && <Spinner thickness={2} size={25} style={{marginTop: 5}} />}</RaisedButton>
                         <div className={styles.accountHelper}>
                             <Link to="/signup">{<FormattedMessage id="_RegisterNow" defaultMessage="Register Now"/>}</Link>
                             <span> · </span>
@@ -99,11 +128,15 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  return {}
+    return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {}
+    return {
+        onRequestLogin: (username, password) => {
+            return dispatch(Actions.requestLogin(username, password))
+        }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectIntl(Login))

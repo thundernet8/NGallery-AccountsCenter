@@ -10,6 +10,7 @@ import { FormattedMessage, injectIntl, defineMessages }         from 'react-intl
 import Validator                    from '../../utils/validator'
 import Actions                      from '../../actions'
 import popMessage                   from '../../components/popMessage'
+import Spinner                      from '../../components/spinner'
 
 const intlMsgs = defineMessages({
     nameInput: {
@@ -39,20 +40,19 @@ class Register extends React.Component {
         username: PropTypes.string,
         email: PropTypes.string,
         password: PropTypes.string,
-        submitting: PropTypes.bool,
-        dialogOpen: PropTypes.bool
+        submitting: PropTypes.bool
     }
 
     state = {
         username: '',
         email: '',
         password: '',
-        submitting: false,
-        dialogOpen: false
+        submitting: false
     }
 
-    validateInput = () => {
-        return Validator.isValidUserName(this.state.username) &&
+    judgeSubmitBtnActive = () => {
+        return !this.state.submitting &&
+        Validator.isValidUserName(this.state.username) &&
         Validator.isValidEmail(this.state.email) &&
         this.state.password.length >= 6
     }
@@ -86,10 +86,19 @@ class Register extends React.Component {
         .then(user => {
             console.dir(user)
             popMessage.show('', this.props.intl.formatMessage(intlMsgs.registerSuccessMsg), 5)
+            this.setState({
+                username: '',
+                email: '',
+                password: '',
+                submitting: false
+            })
         })
         .catch(err => {
             console.dir(err)
             popMessage.show('', err.message, 5)
+            this.setState({
+                submitting: false
+            })
         })
     }
 
@@ -129,7 +138,7 @@ class Register extends React.Component {
                         <TextField className={styles.nameInputWrap} id="username" value={this.state.username} floatingLabelText={formatMessage(intlMsgs.nameInput)} onChange={this.onUserNameChange} disabled={this.state.submitting} />
                         <TextField className={styles.emailInputWrap} id="email" value={this.state.email} floatingLabelText={formatMessage(intlMsgs.emailInput)} onChange={this.onEmailChange} disabled={this.state.submitting} />
                         <TextField type="password" className={styles.passInputWrap} id="password" value={this.state.password} floatingLabelText={formatMessage(intlMsgs.passInput)} onChange={this.onPassChange} disabled={this.state.submitting} />
-                        <RaisedButton className={styles.submitBtn} label={formatMessage(intlMsgs.submitBtn)} primary={true} fullWidth={true} onClick={this.onSubmit} disabled={this.state.submitting || !this.validateInput()} />
+                        <RaisedButton className={styles.submitBtn} label={!this.state.submitting ? formatMessage(intlMsgs.submitBtn) : ''} primary={true} fullWidth={true} onClick={this.onSubmit} disabled={!this.judgeSubmitBtnActive()}>{this.state.submitting && <Spinner thickness={2} size={25} style={{marginTop: 5}} />}</RaisedButton>
                         <div className={styles.accountHelper}>
                             {<FormattedMessage id="_HasAccount" defaultMessage="Has Account?"/>}
                             <span> · </span>

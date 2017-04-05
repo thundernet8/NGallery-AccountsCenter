@@ -30,7 +30,8 @@ let appProdConfig = {
         'react-redux',
         //'react-ga',
         'axios',
-        'material-ui'
+        'material-ui',
+        'rc-notification'
     ]
   },
 

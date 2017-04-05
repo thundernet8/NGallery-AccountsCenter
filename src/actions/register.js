@@ -19,6 +19,7 @@ export const requestRegister = (username, email, password) => {
             return ret
         })
         .catch(err => {
+            console.dir(err) // TODO clear
             dispatch({
                 type: CONSTANTS.REQUEST_REGISTER_FAIL,
                 err

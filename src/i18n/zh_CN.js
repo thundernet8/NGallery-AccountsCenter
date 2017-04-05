@@ -10,7 +10,8 @@ const zhCN = {
     _UserName: '用户名',
     _Email: '邮箱',
     _LabelOk: '确定',
-    _RegisterSuccess: '注册成功, 请查收你的邮箱并激活新账户'
+    _RegisterSuccess: '注册成功, 请查收你的邮箱并激活新账户',
+    _LoginSuccess: '登录成功, 正在重定向...'
 }
 
 export default zhCN
