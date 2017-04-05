@@ -11,7 +11,7 @@ export const requestLogin = (username, password) => {
         const data = {username, password}
         return axios.post(api, data)
         .then(ret => ret.data)
-        .then(ret /* {expire, access_token} */ => {
+        .then(ret /* {expires, accessToken} */ => {
             dispatch({
                 type: CONSTANTS.REQUEST_LOGIN_SUCCESS,
                 payload: ret
@@ -19,11 +19,12 @@ export const requestLogin = (username, password) => {
             return ret
         })
         .catch(err => {
+            const error = new Error(err.response.data.message)
             dispatch({
                 type: CONSTANTS.REQUEST_LOGIN_FAIL,
-                err
+                err: error
             })
-            throw new Error(err)
+            throw error
         })
     }
 }

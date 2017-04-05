@@ -11,6 +11,9 @@ import Actions                      from '../../actions'
 import popMessage                   from '../../components/popMessage'
 import Spinner                      from '../../components/spinner'
 import Validator                    from '../../utils/validator'
+import { getUrlQuery, addUrlQuery } from '../../utils/url'
+import appConfig                    from '../../../config'
+import reactCookie                  from 'react-cookie'
 
 const intlMsgs = defineMessages({
     nameInput: {
@@ -76,6 +79,15 @@ class Login extends React.Component {
             this.setState({
                 submitting: false
             })
+            // 设置 token cookies
+            reactCookie.save(appConfig.tokenCookie, user.accessToken, {httpOnly: false, domain: location.hostname, path: '/', expires: new Date(user.expires)})
+
+            const redirect = getUrlQuery('_redirect')
+            if (redirect) {
+                location.href = addUrlQuery(decodeURIComponent(redirect), {token: user.accessToken})
+            } else {
+                location.href = '/'
+            }
         })
         .catch(err => {
             console.dir(err)
@@ -109,6 +121,9 @@ class Login extends React.Component {
         return (
             <div className={styles.container}>
                 <Meta meta={meta} />
+                {/* 禁止 Chrome 自动填充 */}
+                <input style={{position: 'fixed', top: '-1000px'}} type="text" name="fakeusernameremembered"/>
+                <input style={{position: 'fixed', top: '-1000px'}} type="password" name="fakepasswordremembered"/>
                 <div className={styles.content}>
                     <div className={styles.loginBox}>
                         <a className={styles.logoLink} href="/"><img className={styles.logo} src={require('../../assets/images/logo.png')}/></a>
@@ -116,9 +131,9 @@ class Login extends React.Component {
                         <TextField type="password" className={styles.passInputWrap} id="password" value={this.state.password} floatingLabelText={formatMessage(intlMsgs.passInput)} onChange={this.onPassChange} disabled={this.state.submitting} />
                         <RaisedButton className={styles.submitBtn} label={!this.state.submitting ? formatMessage(intlMsgs.submitBtn) : ''} primary={true} fullWidth={true} onClick={this.onSubmit} disabled={!this.judgeSubmitBtnActive()}>{this.state.submitting && <Spinner thickness={2} size={25} style={{marginTop: 5}} />}</RaisedButton>
                         <div className={styles.accountHelper}>
-                            <Link to="/signup">{<FormattedMessage id="_RegisterNow" defaultMessage="Register Now"/>}</Link>
+                            <Link to={`/signup${this.props.location.search}`}>{<FormattedMessage id="_RegisterNow" defaultMessage="Register Now"/>}</Link>
                             <span> · </span>
-                            <Link to="/findpass">{<FormattedMessage id="_ForgotPassword" defaultMessage="Forgot Password?"/>}</Link>
+                            <Link to={`/findpass${this.props.location.search}`}>{<FormattedMessage id="_ForgotPassword" defaultMessage="Forgot Password?"/>}</Link>
                         </div>
                     </div>
                 </div>

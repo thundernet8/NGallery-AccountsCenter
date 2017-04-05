@@ -20,11 +20,12 @@ export const requestRegister = (username, email, password) => {
         })
         .catch(err => {
             console.dir(err) // TODO clear
+            const error = new Error(err.response.data.message)
             dispatch({
                 type: CONSTANTS.REQUEST_REGISTER_FAIL,
-                err
+                err: error
             })
-            throw new Error(err)
+            throw error
         })
     }
 }

@@ -11,6 +11,7 @@ import Validator                    from '../../utils/validator'
 import Actions                      from '../../actions'
 import popMessage                   from '../../components/popMessage'
 import Spinner                      from '../../components/spinner'
+import { getUrlQuery, addUrlQuery } from '../../utils/url'
 
 const intlMsgs = defineMessages({
     nameInput: {
@@ -92,10 +93,18 @@ class Register extends React.Component {
                 password: '',
                 submitting: false
             })
+            setTimeout(() => {
+                let to = '/signin'
+                const redirect = getUrlQuery('_redirect')
+                if (redirect) {
+                    to = addUrlQuery(to, {_redirect: decodeURIComponent(redirect)})
+                }
+                location.href = to
+            }, 3000)
         })
         .catch(err => {
             console.dir(err)
-            popMessage.show('', err.message, 5)
+            popMessage.show('', err.message, 10)
             this.setState({
                 submitting: false
             })
@@ -142,7 +151,7 @@ class Register extends React.Component {
                         <div className={styles.accountHelper}>
                             {<FormattedMessage id="_HasAccount" defaultMessage="Has Account?"/>}
                             <span> · </span>
-                            <Link to="/signin">{<FormattedMessage id="_LoginNow" defaultMessage="Login Right Now"/>}</Link>
+                            <Link to={`/signin${this.props.location.search}`}>{<FormattedMessage id="_LoginNow" defaultMessage="Login Right Now"/>}</Link>
                         </div>
                     </div>
                 </div>
