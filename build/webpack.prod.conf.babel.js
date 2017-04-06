@@ -59,12 +59,12 @@ let appProdConfig = {
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({name: 'vendors', filename: 'vendors.[hash:8].js'}),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   },
-    //   sourceMap: false
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      },
+      sourceMap: false
+    }),
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.min\.css$/g,
       cssProcessor: require('cssnano'),

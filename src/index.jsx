@@ -7,6 +7,8 @@ import configureStore                                           from './store/co
 import createRouter                                             from './routes'
 import LocalProvider                                            from './i18n/provider'
 import MuiThemeProvider                                         from 'material-ui/styles/MuiThemeProvider'
+import getMuiTheme                                              from 'material-ui/styles/getMuiTheme'
+import { blue500 }                                              from 'material-ui/styles/colors'
 import injectTapEventPlugin                                     from 'react-tap-event-plugin'
 import './styles/global/global.scss'
 import 'animate.css'
@@ -24,8 +26,14 @@ if (module.hot) {
     })
 }
 
+const muiTheme = getMuiTheme({
+    palette: {
+        primary1Color: blue500
+    }
+})
+
 ReactDOM.render(
-    <MuiThemeProvider>
+    <MuiThemeProvider muiTheme={muiTheme}>
         <LocalProvider>
             <Provider store={store}>
                 {createRouter(createBrowserHistory(), (me.profile && me.profile._id) ? me : null)}

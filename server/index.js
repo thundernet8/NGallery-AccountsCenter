@@ -1,17 +1,19 @@
 import express                  from 'express'
 import webpack                  from 'webpack'
-import bodyParser               from 'body-parser';
+import bodyParser               from 'body-parser'
 import cookieParser             from 'cookie-parser'
-import compression              from 'compression';
+import compression              from 'compression'
 import config                   from '../config'
 import devConfig                from '../build/webpack.dev.conf.babel'
 import inject                   from './inject'
+import responseTimer            from 'response-time'
 
 let app = express()
-app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser(config.tokenCookie));
+app.use(compression())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(cookieParser(config.tokenCookie))
+app.use(responseTimer())
 
 if (process.env.NODE_ENV === 'development') {
     let compiler = webpack(devConfig)

@@ -119,6 +119,7 @@ class Login extends React.Component {
         const {formatMessage} = this.props.intl
 
         return (
+            <div className={styles.bgContainer} style={{backgroundImage: `url(${require('../../assets/images/tunnel.jpg')})`}}>
             <div className={styles.container}>
                 <Meta meta={meta} />
                 {/* 禁止 Chrome 自动填充 */}
@@ -137,6 +138,7 @@ class Login extends React.Component {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         )
     }
