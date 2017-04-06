@@ -12,6 +12,7 @@ import Actions                      from '../../actions'
 import popMessage                   from '../../components/popMessage'
 import Spinner                      from '../../components/spinner'
 import { getUrlQuery, addUrlQuery } from '../../utils/url'
+import appConfig                    from '../../../config'
 
 const intlMsgs = defineMessages({
     nameInput: {
@@ -95,9 +96,9 @@ class Register extends React.Component {
             })
             setTimeout(() => {
                 let to = '/signin'
-                const redirect = getUrlQuery('_redirect')
+                const redirect = getUrlQuery(appConfig.authRedirectKey)
                 if (redirect) {
-                    to = addUrlQuery(to, {_redirect: decodeURIComponent(redirect)})
+                    to = addUrlQuery(to, {[appConfig.authRedirectKey]: decodeURIComponent(redirect)})
                 }
                 location.href = to
             }, 3000)

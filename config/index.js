@@ -4,6 +4,8 @@ const baseConfig = {
     app: 'NGallery',
     description: '',
     tokenCookie: 'NGallery_Token',
+    authInfoKey: '_auth',
+    authRedirectKey: '_redirect',
     dockerized: dockerized,
     host: dockerized ? '0.0.0.0' : 'localhost', // for express listen
     static: dockerized ? 'http://static1.fuli.news/' : '/'

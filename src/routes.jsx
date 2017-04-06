@@ -2,6 +2,8 @@ import React                                                                from
 import { Route, Router, Redirect, IndexRoute, applyRouterMiddleware }       from 'react-router'
 // import { useScroll }                                                        from 'react-router-scroll'
 import { getUrlQuery, addUrlQuery }                                         from './utils/url'
+import appConfig                                                            from '../config'
+import { Base64 }                                                           from 'js-base64'
 
 // Containers
 import App from './containers/app'
@@ -32,9 +34,10 @@ export default (history, user) => {
 
     const authRedirect = (nextState, replaceState) => {
         if (user) {
-            const redirect = getUrlQuery('_redirect')
+            const redirect = getUrlQuery(appConfig.authRedirectKey)
             if (redirect) {
-                window.location.replace(addUrlQuery(decodeURIComponent(redirect), {token: user.accessToken})) // TODO salt token
+                let info = Base64.encode(JSON.stringify({token: user.accessToken, expires: user.expires}))
+                location.href = addUrlQuery(decodeURIComponent(redirect), {[appConfig.authInfoKey]: info})
             } else {
                 replaceState({
                     pathname: '/',

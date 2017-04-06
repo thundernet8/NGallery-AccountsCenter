@@ -14,6 +14,7 @@ import Validator                    from '../../utils/validator'
 import { getUrlQuery, addUrlQuery } from '../../utils/url'
 import appConfig                    from '../../../config'
 import reactCookie                  from 'react-cookie'
+import { Base64 }                   from 'js-base64'
 
 const intlMsgs = defineMessages({
     nameInput: {
@@ -82,9 +83,10 @@ class Login extends React.Component {
             // 设置 token cookies
             reactCookie.save(appConfig.tokenCookie, user.accessToken, {httpOnly: false, domain: location.hostname, path: '/', expires: new Date(user.expires)})
 
-            const redirect = getUrlQuery('_redirect')
+            const redirect = getUrlQuery(appConfig.authRedirectKey)
             if (redirect) {
-                location.href = addUrlQuery(decodeURIComponent(redirect), {token: user.accessToken})
+                let info = Base64.encode(JSON.stringify({token: user.accessToken, expires: user.expires}))
+                location.href = addUrlQuery(decodeURIComponent(redirect), {[appConfig.authInfoKey]: info})
             } else {
                 location.href = '/'
             }

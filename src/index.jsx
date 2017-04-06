@@ -11,7 +11,6 @@ import getMuiTheme                                              from 'material-u
 import { blue500 }                                              from 'material-ui/styles/colors'
 import injectTapEventPlugin                                     from 'react-tap-event-plugin'
 import './styles/global/global.scss'
-import 'animate.css'
 
 injectTapEventPlugin()
 
