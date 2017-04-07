@@ -15,7 +15,7 @@ const authorize = (token) => {
         }
 
         const axiosInstance = axios.create({
-            baseURL: config.api,
+            baseURL: config.nodeApi,
             timeout: 1000,
             headers: {'Authorization': `Bearer ${token}`}
         })

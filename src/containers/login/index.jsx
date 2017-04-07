@@ -86,7 +86,7 @@ class Login extends React.Component {
             const redirect = getUrlQuery(appConfig.authRedirectKey)
             if (redirect) {
                 let info = Base64.encode(JSON.stringify({token: user.accessToken, expires: user.expires}))
-                location.href = addUrlQuery(decodeURIComponent(redirect), {[appConfig.authInfoKey]: info})
+                location.href = addUrlQuery(decodeURIComponent(redirect), {[appConfig.authInfoKey]: info /* , _: (new Date()).getTime().toString() */})
             } else {
                 location.href = '/'
             }
